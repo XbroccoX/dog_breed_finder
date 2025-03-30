@@ -39,9 +39,7 @@ export class DogsCardsComponent {
     displayName: string;
   }> = [];
 
-  constructor(
-    private _dogService: DogService
-  ) {}
+  constructor(private _dogService: DogService) {}
 
   ngOnInit() {
     this.loadBreeds();
@@ -54,8 +52,8 @@ export class DogsCardsComponent {
     });
   }
   // Metodo para buscar por searchinput
-  onSearch(){
-    if(!this.searchTerm) {
+  onSearch() {
+    if (!this.searchTerm) {
       this.filteredBreeds = [];
       return;
     }
@@ -65,39 +63,60 @@ export class DogsCardsComponent {
 
     //recorrer las razas de perros y filtrar por el nombre
     Object.entries(this.breeds).forEach(([breed, subBreeds]) => {
-      if(breed.toLowerCase().includes(searchLower)){
+      if (breed.toLowerCase().includes(searchLower)) {
         // Si es la raza principal
-        if(subBreeds.length === 0){
+        if (subBreeds.length === 0) {
           // Si no hay subrazas, agrego la raza,
           this.filteredBreeds.push({
             name: breed,
-            displayName: breed.charAt(0).toUpperCase() + breed.slice(1)
+            displayName: breed.charAt(0).toUpperCase() + breed.slice(1),
           });
         } else {
-          subBreeds.forEach(subBreed => {
+          subBreeds.forEach((subBreed) => {
             this.filteredBreeds.push({
               name: breed,
               subBreed: subBreed,
-              displayName: `${subBreed.charAt(0).toUpperCase() + subBreed.slice(1)} ${breed}`,
+              displayName: `${
+                subBreed.charAt(0).toUpperCase() + subBreed.slice(1)
+              } ${breed}`,
             });
           });
         }
       }
       // si busca por subrazas, agrego la subraza y la raza
-      subBreeds.forEach(subBreed => {
-        if(subBreed.toLowerCase().includes(searchLower)){
+      subBreeds.forEach((subBreed) => {
+        if (subBreed.toLowerCase().includes(searchLower)) {
           this.filteredBreeds.push({
             name: breed,
             subBreed: subBreed,
-            displayName: `${subBreed.charAt(0).toUpperCase() + subBreed.slice(1)} ${breed}`,
+            displayName: `${
+              subBreed.charAt(0).toUpperCase() + subBreed.slice(1)
+            } ${breed}`,
           });
         }
       });
-    })
+    });
   }
 
+  // Metodo para ver
+  selectBreed(breed: string, subBreed?: string) {
+    this.loading = true;
+    // SI ES UNA SUBRAZA, SE MUESTRA LA SUBRAZA Y LA RAZA
+    // SI NO, SOLO SE MUESTRA LA RAZA
+    this.currentBreedName = subBreed
+      ? `${subBreed.charAt(0).toUpperCase() + subBreed.slice(1)} ${breed}`
+      : breed.charAt(0).toUpperCase() + breed.slice(1);
 
-
-
-
+    this._dogService.getBreedImages(breed, subBreed).subscribe({
+      next: (images) => {
+        this.images = images;
+        this.loading = false;
+        this.searchTerm = '';
+        this.filteredBreeds = [];
+      },
+      error: () => {
+        this.loading = false;
+      },
+    });
+  }
 }

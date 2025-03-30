@@ -9,16 +9,17 @@
       (ngModelChange)="onSearch()"
     >
   </mat-form-field>
-
-  <pre> {{ filteredBreeds | json}}</pre>
-
-  <!-- <div *ngIf="filteredBreeds.length > 0" class="breed-list">
+  <div *ngIf="filteredBreeds.length > 0" class="breed-list mt-0">
     <div *ngFor="let breed of filteredBreeds"
-          class="breed-item"
-          >
+      (click)="selectBreed(breed.name, breed.subBreed)"
+      class="breed-item"
+    >
       {{breed.displayName}}
     </div>
   </div>
+
+  <!-- <pre> {{ filteredBreeds | json}}</pre> -->
+
 
   <div *ngIf="loading" style="display: flex; justify-content: center; margin: 20px;">
     <mat-spinner></mat-spinner>
@@ -31,5 +32,5 @@
         <p>{{currentBreedName}}</p>
       </mat-card-content>
     </mat-card>
-  </div> -->
+  </div>
 </div>

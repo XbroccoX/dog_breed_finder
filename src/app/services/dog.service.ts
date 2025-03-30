@@ -7,26 +7,23 @@ export interface DogBreeds {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DogService {
+  URL = 'https://dog.ceo/api';
 
-  URL = 'https://dog.ceo/api'
-
-  constructor(
-    private http: HttpClient
-  ) { }
-
+  constructor(private http: HttpClient) {}
 
   // GET LIST of ALL breeds
   getAllBreeds(): Observable<any> {
-    return this.http.get<{message: any}>(`${this.URL}/breeds/list/all`)
-      .pipe(
-        map(response => response.message));
+    return this.http.get<{ message: DogBreeds }>(`${this.URL}/breeds/list/all`)
+      .pipe(map((response) => response.message));
   }
 
-
-
-
-
+  // GET IMAGES by breed
+  getBreedImages(breed: string, subBreed?: string): Observable<string[]> {
+    const breedPath = subBreed ? `${breed}/${subBreed}` : breed;
+    return this.http.get<{ message: string[] }>(`${this.URL}/breed/${breedPath}/images`)
+      .pipe(map((response) => response.message));
+  }
 }
