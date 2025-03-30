@@ -1,1 +1,31 @@
-<p>dogs-cards works!</p>
+<mat-toolbar color="primary">
+      <span>Dog Breed Gallery</span>
+    </mat-toolbar>
+
+    <div class="container">
+      <mat-form-field appearance="fill" style="width: 300px;">
+        <mat-label>Search breed</mat-label>
+        <input matInput [(ngModel)]="searchTerm"  placeholder="Type a breed name...">
+      </mat-form-field>
+
+      <div *ngIf="filteredBreeds.length > 0" class="breed-list">
+        <div *ngFor="let breed of filteredBreeds"
+             class="breed-item"
+             >
+          {{breed.displayName}}
+        </div>
+      </div>
+
+      <div *ngIf="loading" style="display: flex; justify-content: center; margin: 20px;">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="dog-grid" *ngIf="!loading && images.length > 0">
+        <mat-card class="dog-card" *ngFor="let image of images">
+          <img mat-card-image [src]="image" [alt]="currentBreedName">
+          <mat-card-content>
+            <p>{{currentBreedName}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
