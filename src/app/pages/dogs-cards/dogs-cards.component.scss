@@ -1,7 +1,9 @@
 .container {
   padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+}
+
+.search-field {
+  min-width: 300px;
 }
 
 .dog-grid {
@@ -9,10 +11,6 @@
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
-}
-
-.dog-card {
-  height: 100%;
 }
 
 .dog-card img {

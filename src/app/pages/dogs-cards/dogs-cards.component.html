@@ -3,9 +3,9 @@
 </mat-toolbar>
 
 <div class="container">
-  <mat-form-field appearance="fill" style="width: 300px;">
+  <mat-form-field appearance="fill" class="search-field">
     <mat-label>Search breed</mat-label>
-    <input matInput [(ngModel)]="searchTerm"  placeholder="Type a breed name..."
+    <input matInput [(ngModel)]="searchTerm"  placeholder="French Bulldog, Beagle, etc."
       (ngModelChange)="onSearch()"
     >
   </mat-form-field>
@@ -20,17 +20,29 @@
 
   <!-- <pre> {{ filteredBreeds | json}}</pre> -->
 
+  @if(loading){
+    <div class="d-flex justify-content-center mt-3">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
 
-  <div *ngIf="loading" style="display: flex; justify-content: center; margin: 20px;">
-    <mat-spinner></mat-spinner>
-  </div>
+  @if(!loading && images.length === 0){
+    <div class="d-flex justify-content-center mt-3">
+      <p>No images found for this breed.</p>
+    </div>
+  }
 
-  <div class="dog-grid" *ngIf="!loading && images.length > 0">
-    <mat-card class="dog-card" *ngFor="let image of images">
-      <img mat-card-image [src]="image" [alt]="currentBreedName">
-      <mat-card-content>
-        <p>{{currentBreedName}}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  @if(!loading && images.length > 0){
+    <div class="row mt-3 g-4">
+      <div class="col-6 col-sm-4" *ngFor="let image of images">
+        <mat-card class="dog-card">
+          <img mat-card-image [src]="image" [alt]="currentBreedName">
+          <mat-card-content>
+            <p>{{ currentBreedName }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  }
+
 </div>
