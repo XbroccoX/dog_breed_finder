@@ -1,35 +1,29 @@
 <div class="container py-5">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h2 class="h3 mb-0">My Favorite Dogs</h2>
-    <mat-chip-set>
-      <mat-chip>{{favorites.length}} favorites</mat-chip>
-    </mat-chip-set>
+    <span class="badge bg-secondary fs-6">{{ favorites.length }} favorites</span>
   </div>
 
   <div *ngIf="favorites.length > 0" class="row g-4">
     <div class="col-12 col-sm-6 col-lg-4" *ngFor="let favorite of favorites">
-      <mat-card class="h-100 shadow-sm">
-        <div class="aspect-4-3">
-          <img [src]="favorite.url" [alt]="favorite.breed" class="position-cover object-fit-cover">
-          <button mat-icon-button
-                  class="position-absolute top-0 end-0 m-2 bg-white bg-opacity-90 hover-scale is-favorite"
+      <div class="card h-100 shadow-sm border-0">
+        <div class="position-relative ratio ratio-4x3 bg-light">
+          <img [src]="favorite.url" [alt]="favorite.breed" class="card-img-top img-fluid object-fit-contain">
+          <button class="btn btn-light btn-favorite position-absolute top-0 end-0 m-2 hover-scale"
                   (click)="removeFavorite(favorite.url, $event)">
-            <mat-icon>favorite</mat-icon>
+            <i class="bi bi-heart-fill text-danger"></i>
           </button>
         </div>
-        <mat-card-content class="text-center py-3">
-          <p class="h6 mb-0">{{favorite.breed}}</p>
-          <small class="text-muted">Added {{ getRelativeTime(favorite.addedAt) }}</small>
-        </mat-card-content>
-      </mat-card>
+        <div class="card-body text-center">
+          <h5 class="card-title mb-1">{{ favorite.breed }}</h5>
+        </div>
+      </div>
     </div>
   </div>
 
   <div *ngIf="favorites.length === 0" class="text-center py-5">
-    <mat-icon class="display-1 text-muted mb-3">favorite_border</mat-icon>
+    <i class="bi bi-heart display-1 text-muted mb-3"></i>
     <p class="text-muted mb-4">No favorite images yet</p>
-    <button mat-raised-button color="primary" (click)="goToSearch()">
-      Search for Dogs
-    </button>
+    <button class="btn btn-primary" (click)="goToSearch()">Search for Dogs</button>
   </div>
 </div>

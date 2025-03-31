@@ -30,35 +30,18 @@ export class FavoritesComponent implements OnInit {
   }
 
   loadFavorites() {
-    this._dogService.getFavorites();
+    this._dogService.favorites$.subscribe((fav) => {
+      this.favorites = fav;
+    });
   }
 
   removeFavorite(url: string, event: MouseEvent) {
     event.stopPropagation();
     this._dogService.removeFromFavorites(url);
-    this.loadFavorites();
   }
 
   goToSearch() {
     this.router.navigate(['/search']);
   }
 
-  getRelativeTime(timestamp: number): string {
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-    const diff = timestamp - Date.now();
-    const diffInDays = Math.round(diff / (1000 * 60 * 60 * 24));
-
-    if (Math.abs(diffInDays) < 1) {
-      return 'today';
-    } else if (Math.abs(diffInDays) === 1) {
-      return rtf.format(diffInDays, 'day');
-    } else if (Math.abs(diffInDays) < 7) {
-      return rtf.format(diffInDays, 'day');
-    } else if (Math.abs(diffInDays) < 30) {
-      return rtf.format(Math.round(diffInDays / 7), 'week');
-    } else if (Math.abs(diffInDays) < 365) {
-      return rtf.format(Math.round(diffInDays / 30), 'month');
-    }
-    return rtf.format(Math.round(diffInDays / 365), 'year');
-  }
 }
