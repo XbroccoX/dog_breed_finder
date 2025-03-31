@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DogBreeds, DogService } from '../../services/dog.service';
 // Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DogBreeds, DogService } from '../../services/dog.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @Component({
@@ -22,22 +24,27 @@ import { DogBreeds, DogService } from '../../services/dog.service';
     MatInputModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatChipsModule,
   ],
   templateUrl: './dogs-cards.component.html',
   styleUrl: './dogs-cards.component.scss',
 })
-export class DogsCardsComponent {
+export class DogsCardsComponent implements OnInit {
   breeds: DogBreeds = {};
 
   searchTerm: string = '';
-  images: string[] = [];
-  loading: boolean = false;
-  currentBreedName: string = '';
   filteredBreeds: Array<{
     name: string;
     subBreed?: string;
     displayName: string;
   }> = [];
+
+  images: string[] = [];
+  currentBreedName: string = '';
+
+  loading: boolean = false;
+  hover: boolean = false;
 
   constructor(private _dogService: DogService) {}
 
@@ -101,6 +108,8 @@ export class DogsCardsComponent {
   // Metodo para ver
   selectBreed(breed: string, subBreed?: string) {
     this.loading = true;
+    this.searchTerm = '';
+    this.filteredBreeds = [];
     // SI ES UNA SUBRAZA, SE MUESTRA LA SUBRAZA Y LA RAZA
     // SI NO, SOLO SE MUESTRA LA RAZA
     this.currentBreedName = subBreed
@@ -111,12 +120,25 @@ export class DogsCardsComponent {
       next: (images) => {
         this.images = images;
         this.loading = false;
-        this.searchTerm = '';
-        this.filteredBreeds = [];
       },
       error: () => {
         this.loading = false;
       },
     });
+  }
+
+  // Metodo para agregar un favorito
+  isFavorite(url: string): boolean {
+    return this._dogService.isFavorite(url);
+  }
+
+  // Metodo para ir a favoritos
+  toggleFavorite(url: string, event: MouseEvent) {
+    event.stopPropagation();
+    if (this.isFavorite(url)) {
+      this._dogService.removeFromFavorites(url);
+    } else {
+      this._dogService.addToFavorites(url, this.currentBreedName);
+    }
   }
 }

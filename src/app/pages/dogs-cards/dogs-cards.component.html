@@ -1,48 +1,80 @@
-<mat-toolbar>
-  <span>Dog Breed Gallery</span>
-</mat-toolbar>
+<div class="bg-primary bg-gradient text-white py-5 mb-4">
+  <div class="container text-center py-5">
+    <h1 class="display-4 fw-light mb-3">Discover Dog Breeds</h1>
+    <p class="lead opacity-75 mb-4">Search and explore different dog breeds and their beautiful images</p>
 
-<div class="container">
-  <mat-form-field appearance="fill" class="search-field">
-    <mat-label>Search breed</mat-label>
-    <input matInput [(ngModel)]="searchTerm"  placeholder="French Bulldog, Beagle, etc."
-      (ngModelChange)="onSearch()"
-    >
-  </mat-form-field>
-  <div *ngIf="filteredBreeds.length > 0" class="breed-list mt-0">
-    <div *ngFor="let breed of filteredBreeds"
-      (click)="selectBreed(breed.name, breed.subBreed)"
-      class="breed-item"
-    >
-      {{breed.displayName}}
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 position-relative">
+        <mat-form-field appearance="fill" class="w-100 bg-white rounded">
+          <mat-label>Search for a dog breed</mat-label>
+          <input matInput
+                 [(ngModel)]="searchTerm"
+                 (ngModelChange)="onSearch()"
+                 placeholder="French Bulldog, Golden Retriever...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        @if(filteredBreeds.length > 0){
+          <div class="position-absolute start-0 end-0 bg-white rounded shadow-sm mt-2">
+            <div *ngFor="let breed of filteredBreeds"
+                 class="p-3 d-flex align-items-center cursor-pointer"
+                 [class.bg-light]="hover"
+                 (mouseenter)="hover = true"
+                 (mouseleave)="hover = false"
+                 matRipple
+                 (click)="selectBreed(breed.name, breed.subBreed)">
+              <mat-icon class="text-muted me-3">pets</mat-icon>
+              <span class="text-dark">{{breed.displayName}}</span>
+            </div>
+          </div>
+        }
+
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- <pre> {{ filteredBreeds | json}}</pre> -->
-
+<div class="container py-4">
   @if(loading){
-    <div class="d-flex justify-content-center mt-3">
-      <mat-spinner></mat-spinner>
-    </div>
-  }
-
-  @if(!loading && images.length === 0){
-    <div class="d-flex justify-content-center mt-3">
-      <p>No images found for this breed.</p>
+    <div  class="text-center py-5">
+      <mat-spinner diameter="40" class="mx-auto mb-3"></mat-spinner>
+      <p class="text-muted">Fetching images...</p>
     </div>
   }
 
   @if(!loading && images.length > 0){
-    <div class="row mt-3 g-4">
-      <div class="col-6 col-sm-4" *ngFor="let image of images">
-        <mat-card class="dog-card">
-          <img mat-card-image [src]="image" [alt]="currentBreedName">
-          <mat-card-content>
-            <p>{{ currentBreedName }}</p>
-          </mat-card-content>
-        </mat-card>
+    <div>
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0">{{ currentBreedName }}</h2>
+        <div class="badge bg-secondary fs-6">
+          {{ images.length }} images
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-4" *ngFor="let image of images">
+          <div class="card card-equal h-100 shadow-sm">
+            <div class="card-img-container position-relative">
+              <img [src]="image" [alt]="currentBreedName" class="card-img-top card-img">
+              <button class="btn btn-light position-absolute top-0 end-0 m-2 hover-scale"
+                      [class.is-favorite]="isFavorite(image)"
+                      (click)="toggleFavorite(image, $event)">
+                <i class="bi" [ngClass]="{'bi-heart-fill': isFavorite(image), 'bi-heart': !isFavorite(image)}"></i>
+              </button>
+            </div>
+            <div class="card-body text-center py-3">
+              <h5 class="card-title mb-0">{{ currentBreedName }}</h5>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   }
 
+  @if(!loading && !images.length){
+    <div class="text-center py-5">
+      <mat-icon class="text-muted mb-3">pets</mat-icon>
+      <p class="text-muted">Search for a dog breed to see images</p>
+    </div>
+  }
 </div>

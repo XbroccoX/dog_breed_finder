@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<mat-toolbar color="primary" class="fixed-top shadow-sm">
+  <span>🐕 Dog Breed Gallery</span>
+  <div class="ms-auto">
+    <a mat-button routerLink="/dogs-cards" routerLinkActive="bg-opacity-10 bg-white">
+      <mat-icon>search</mat-icon>
+      Search Breeds
+    </a>
+    <a mat-button routerLink="/favorites" routerLinkActive="bg-opacity-10 bg-white">
+      <mat-icon>favorite</mat-icon>
+      My Favorites
+    </a>
+  </div>
+</mat-toolbar>
+
+<div class="mt-5 pt-2">
+  <router-outlet></router-outlet>
+</div>
