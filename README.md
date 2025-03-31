@@ -1,6 +1,26 @@
 # DogBreedFinder
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+DogBreedFinder es una aplicación Angular (standalone) que permite explorar imágenes de razas de perros usando la API de [Dog CEO](https://dog.ceo/dog-api/). La aplicación implementa las siguientes funcionalidades:
+
+- **Búsqueda por Raza:**  
+  Permite buscar y explorar imágenes de perros de acuerdo a la raza (y sub-raza, si aplica).
+
+- **Vista en Grid con Diseño Minimalista:**  
+  La visualización de las imágenes se realiza en tarjetas (cards) utilizando clases de Bootstrap para definir una grid responsiva, con aspect ratio fijo e imágenes que se ajustan (object-fit: contain).
+
+- **Favoritos con Estado Reactivo:**  
+  Se usa RxJS para manejar el estado de los perros favoritos en memoria (a través de un BehaviorSubject) en lugar de localStorage. Se pueden agregar y remover imágenes de favoritos y se visualizan en la página "My Favorites" en tiempo real.
+
+- **Botón "Sorpréndeme":**  
+  Al hacer clic en este botón se obtiene una imagen aleatoria llamando al endpoint `/breeds/image/random` de la API, la cual se muestra como una sorpresa para el usuario.
+
+- **Integración y Navegación:**  
+  La aplicación cuenta con un sistema de routing standalone. Las rutas disponibles son, por ejemplo, la vista general de las imágenes (`/dogs-cards` o búsqueda) y la vista de favoritos (`/favorites`).
+
+## Requisitos
+
+- Node.js y npm instalados.
+- Angular CLI versión 18 o superior.
 
 ## Development server
 
