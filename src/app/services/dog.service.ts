@@ -60,4 +60,11 @@ export class DogService {
   isFavorite(url: string): boolean {
     return this.favoritesSubject.value.some((fav) => fav.url === url);
   }
+
+  // RAMDOM IMAGE
+  getRandomImage(): Observable<string> {
+    return this.http
+      .get<{ message: string }>(`${this.URL}/breeds/image/random`)
+      .pipe(map((response) => response.message));
+  }
 }

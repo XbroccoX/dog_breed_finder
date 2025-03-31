@@ -41,6 +41,7 @@ export class DogsCardsComponent implements OnInit {
   }> = [];
 
   images: string[] = [];
+  randomImage: string | null = null;
   currentBreedName: string = '';
 
   loading: boolean = false;
@@ -119,6 +120,19 @@ export class DogsCardsComponent implements OnInit {
     this._dogService.getBreedImages(breed, subBreed).subscribe({
       next: (images) => {
         this.images = images;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  surpriseMe() {
+    this.loading = true;
+    this._dogService.getRandomImage().subscribe({
+      next: (image) => {
+        this.randomImage = image;
         this.loading = false;
       },
       error: () => {

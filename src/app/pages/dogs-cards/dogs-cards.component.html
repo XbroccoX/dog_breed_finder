@@ -42,6 +42,28 @@
     </div>
   }
 
+  <!-- SORPRISE ME -->
+  <div class="text-center mb-4">
+    <button class="btn btn-primary"
+      (click)="surpriseMe()"
+    >
+      Surprise Me!🎉
+    </button>
+  </div>
+
+  @if(randomImage){
+    <div class="mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="position-relative ratio ratio-4x3 bg-light">
+          <img [src]="randomImage" alt="Random Dog" class="card-img-top img-fluid object-fit-contain">
+        </div>
+        <div class="card-body text-center">
+          <h5 class="card-title mb-1">Sorprise!</h5>
+        </div>
+      </div>
+    </div>
+  }
+
   @if(!loading && images.length > 0){
     <div>
       <div class="d-flex align-items-center justify-content-between mb-4">
